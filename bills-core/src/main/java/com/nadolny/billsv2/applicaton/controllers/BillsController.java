@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
 class BillsController {
 
     private final BillsService billsService;
@@ -26,8 +23,8 @@ class BillsController {
         billsService.addBills(payerDto);
     }
 
-    @GetMapping("/getBills")
-    List<PayerDto> getBills(){
-         return (List<PayerDto>) billsService.getBills();
+    @GetMapping("/calculate")
+    String calculate(){
+         return billsService.calculate();
     }
 }

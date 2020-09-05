@@ -6,15 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
-public class BillsServiceImpl implements BillsService {
+class BillsServiceImpl implements BillsService {
 
     private final BillsDaoCrud billsDaoCrud;
 
     @Autowired
-    public BillsServiceImpl(BillsDaoCrud billsDaoCrud) {
+    BillsServiceImpl(BillsDaoCrud billsDaoCrud) {
         this.billsDaoCrud = billsDaoCrud;
     }
 
@@ -24,9 +22,14 @@ public class BillsServiceImpl implements BillsService {
         billsDaoCrud.save(payerDto);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        billsDaoCrud.deleteById(id);
+    }
+
     @Transactional
     @Override
-    public List getBills() {
-        return (List) billsDaoCrud.findAll();
+    public String calculate() {
+        return null;
     }
 }

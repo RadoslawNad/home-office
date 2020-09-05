@@ -4,15 +4,15 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "PAYER")
+@Table(name = "Payers")
 public class PayerDto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
 
-    @OneToMany(mappedBy="payer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "payer", cascade = CascadeType.ALL)
     private List<BillsValuesDto> bills;
 
     public PayerDto() {
@@ -22,16 +22,11 @@ public class PayerDto {
         this.name = name;
     }
 
-    public PayerDto(String name, List<BillsValuesDto> bills) {
-        this.name = name;
-        this.bills = bills;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -32,4 +32,9 @@ class BillsServiceImpl implements BillsService {
     public String calculate() {
         return null;
     }
+
+
+    private String calculateBills() {
+        return null;
+    }
 }

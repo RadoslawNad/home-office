@@ -1,5 +1,101 @@
-<p>Bills!</p>
+<form (keydown.enter)="$event.target.tagName == 'TEXTAREA'" [formGroup]="payersGroup" (ngSubmit)="onSubmit($event)"
+      class="form-horizontal">
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      <div class="panel-heading">
+        <h3 class="panel-title">Bills</h3>
+      </div>
 
-<input type="text" #name>
-<button (click)="showVal(name.value)">Przycisk</button>
-{{nameVal}}
+      <div>
+        <div class="form-row">
+          <div class="col-md-4">
+            <label for="payerNameInput">Person name:</label>
+            <input id="payerNameInput" type="text" class="form-control" #name
+                   (keyup.enter)="addPayersButtonClick(name.value)"
+                   [(ngModel)]="payerNameInput" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="col">
+            <button class="btn btn-primary" type="button" (click)="addPayersButtonClick(name.value)">Add person</button>
+          </div>
+        </div>
+      </div>
+      <br><br>
+
+      <!-- Payers form group -->
+      <div formArrayName="payers" *ngFor="let payer of payers()['controls']; let payIndex = index">
+        <div class="well">
+          <div [formGroupName]="payIndex">
+            <div>
+              <h2>{{payer.get('payerName').value}}</h2>
+            </div>
+
+            <!--Display add bills form-->
+            <div class="form-group form-row">
+              <div class="col-md-2">
+                <label [attr.for]="'bills'+payIndex">Bill:</label>
+                <input [id]="'bills'+payIndex" type="text" class="form-control" formArrayName="bills" #bill>
+              </div>
+              <div class="col">
+                <button class="btn btn-primary" type="button" (click)="addBillButtonClick(payIndex, bill.value)">Add
+                  bill
+                </button>
+              </div>
+              <div>
+                <button (click)="removePayer(payIndex)">Remove</button>
+              </div>
+            </div>
+          </div>
+
+          <!--Display table with bills-->
+          <div *ngFor="let bill of payerBills(payIndex)['controls']; let billsIndex = index">
+            <table class="table" id="table">
+              <thead>
+              <tr>
+                <th>Value</th>
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>{{bill.get('value').value}}</td>
+                <td>
+                  <button (click)="removePayerBill(payIndex,billsIndex)">Remove</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="panel-footer">
+      <button class="btn btn-primary" type="submit">Calculate</button>
+    </div>
+  </div>
+</form>
+
+<table border="1">
+  <tr>
+    <th style="padding: 10px">FormGroup</th>
+    <th style="padding: 10px">FormControl</th>
+  </tr>
+
+  <tr>
+    <td style="padding: 10px">
+      touched : {{payersGroup.touched}}
+      <br/>dirty : {{payersGroup.dirty}}
+      <br/>valid : {{payersGroup.valid}}
+      <br/>value : {{payersGroup.value | json}}
+    </td>
+
+    <td style="padding: 10px">
+      touched : {{payersGroup.get('payers').touched}}
+      <br/>dirty : {{payersGroup.get('payers').dirty}}
+      <br/>valid : {{payersGroup.get('payers').valid}}
+      <br/>value : {{payersGroup.get('payers').value | json}}
+    </td>
+  </tr>
+</table>
+
